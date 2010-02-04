@@ -14,7 +14,6 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		C12C08A1111B3FAE00A3694E /* UntitledAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C12C089E111B3FAE00A3694E /* UntitledAppDelegate.m */; };
 		C12C08A2111B3FAE00A3694E /* UntitledViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12C08A0111B3FAE00A3694E /* UntitledViewController.m */; };
-		C12C08A6111B3FCF00A3694E /* Untitled-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C12C08A4111B3FCF00A3694E /* Untitled-Info.plist */; };
 		C12C08A7111B3FCF00A3694E /* UntitledViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C12C08A5111B3FCF00A3694E /* UntitledViewController.xib */; };
 		C17D6DC7111B364B00B16DEC /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C17D6DC4111B364B00B16DEC /* AsyncSocket.m */; };
 		C17D6DC8111B364B00B16DEC /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C17D6DC6111B364B00B16DEC /* AsyncUdpSocket.m */; };
@@ -165,7 +164,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				C12C08A6111B3FCF00A3694E /* Untitled-Info.plist in Resources */,
 				C12C08A7111B3FCF00A3694E /* UntitledViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
