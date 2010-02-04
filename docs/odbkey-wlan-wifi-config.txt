@@ -1,0 +1,12 @@
+WiFi Configuration Technical Information - Ad hoc Mode
+SSID: OBDKey WLAN
+IP: 192.168.0.74
+Subnet: 255.255.255.0
+Port: 23
+Antenna: Internal
+Power Consumption: 0.240 Watts
+Wifi Standard: 802.11b/g
+Plastic case: Single case design. Automotive Grade resins and silicones.
+Physical Dimensions: 120x46x28mm / 4.75 x 1.75 x 1.0 inches
+
+
