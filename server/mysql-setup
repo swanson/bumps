@@ -1,0 +1,20 @@
+BEGIN;
+CREATE TABLE `parameters` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `name` varchar(200) NOT NULL UNIQUE,
+    `units` varchar(200),
+    `created` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `updated` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00'
+                ON UPDATE CURRENT_TIMESTAMP
+)AUTO_INCREMENT=1;
+
+CREATE TABLE `data` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `vin` varchar(20) NOT NULL,
+    `param_id` integer NOT NULL,
+    `value` double(6,3) NOT NULL,
+    `created` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `updated` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00'
+                ON UPDATE CURRENT_TIMESTAMP
+)
+;
