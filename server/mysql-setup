@@ -1,5 +1,5 @@
 BEGIN;
-SELECT iphone_F09;
+USE iphone_F09;
 CREATE TABLE `parameters` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `name` varchar(200) NOT NULL UNIQUE,
