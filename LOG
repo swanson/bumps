@@ -1,0 +1,94 @@
+#####################################################################    
+ 
+    ECE495S: Vertically Intergrated Projects (VIP)
+    iPhone Team -- Vehicle Data Logging
+
+    Team Members:
+        Matt Swanson, swanson@purdue.edu (Senior - CompE)
+        Jevin Sweval, jsweval@purdue.edu (Senior - CompE)
+        Joey Ernst, jernst@purdue.edu (Grad - EE/Civil)
+
+    Advisor:
+        Aaron Ault, ault@purdue.edu (ECE, CWSA)
+
+    Goals:  
+        Log data from vehicles using a wireless ODB-II
+        sensor and iPhone GPS/Accelerometer; use iPhone
+        to transmit data to external database; raw data
+        will be used for other research projects possibly
+        related to traffic light control, pot-hole detection,
+        or GPS error correction
+
+#####################################################################
+
+    Unless otherwise noted, meetings occured in MSEE140 (VIP lab)
+    at 1:30pm.
+
+    Jan 22, 2010:
+        Deliverables:
+            -None, first meeting
+        
+        Meeting Summary:
+            -Discussed the overall project ideas and motivation
+                behind them
+            -Two possible applications: pot-hole detection and
+                traffic light controller
+            -Both projects are in the Civil dept; Joey will handle
+                anything we need on that front
+            -Expressed need for iPhone device and certificate
+            -Joey is ordering a wifi OBD-II device and an iPhone,
+                also getting iPads at some point
+            -Prof Delp has iPhone certificates, why don't we :-(
+        
+        Assigned Tasks:
+            -Setup iMacs (Xcode, SDK, user accounts)
+            -Contact Prof Delp for certificate info
+            -Begin researching OBD-II protocol
+            -Plan overall system 'top-level'
+        
+    Jan 29, 2010:
+        Deliverables:
+            -iMacs are setup
+            -Contacted Prof Delp, who directed us to Ben Brahme
+                in regards to certificates, awaiting response
+            -System block-diagram
+
+        Meeting Summary:
+            -Discussed issues with traffic control and Civil
+                dept; basically this isn't going to happen
+                because it is deemed unsafe (hackers etc)
+            -Progress updates on the developer certificates
+            -Feedback on system diagram, sockets from Aaron
+            -Joey will send us info about the specific device
+                he ordered
+            -Immediate goal: log everything we can from the
+                car, figure out what to do with it later
+
+        Assigned Tasks:
+            -Determine what kind of data we can get from the
+                OBD-II sensor
+            -Look for documentation on obdkey.com 
+            -Setup database schema
+
+    Feb 5, 2010:
+        Deliverables:
+            -MySQL database initial setup
+            -git repository created
+            -Simple Python socket server written
+            -Proof-of-concept iPhone socket client
+                using CocoaAsyncSocket library
+            -Compiled list of OBD-II codes
+            -Developer certificates downloaded, waiting on
+                iPhone device ID to provision projects
+
+        Meeting Summary:
+            -
+        Assigned Tasks:
+            -
+    Feb 12, 2010:
+    Feb 19, 2010:
+    Feb 26, 2010:
+    Mar 5, 2010:
+    Mar 12, 2010:
+    Mar 19, 2010:
+
