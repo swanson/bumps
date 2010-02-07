@@ -8,7 +8,6 @@ def listen(host, port):
     while True:
         data, addr = listenSocket.recvfrom(bufsize)
         print "Received: %s from %s" % (repr(data), addr)
-        forward(data, addr[1]) # data and port
 
 listen("localhost", listenPort)
 
