@@ -1,5 +1,5 @@
 BEGIN;
-USE iphone_odb2;
+USE iphone_obd2;
 CREATE TABLE `parameters` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `name` varchar(200) NOT NULL UNIQUE,
