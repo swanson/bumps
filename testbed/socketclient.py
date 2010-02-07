@@ -1,9 +1,9 @@
 from socket import *
 import sys
 
-host, port = ('localhost', 50001)
+host, port = ('localhost', 8005)
 
-server = socket(AF_INET, SOCK_STREAM)
+server = socket(AF_INET, SOCK_DGRAM)
 server.connect((host,port))
 while 1:
     try:
@@ -14,3 +14,7 @@ while 1:
     except KeyboardInterrupt:
         server.close()
         sys.exit()
+    except error:
+        print 'lost connection'
+        sys.exit()
+        #try to reconnect
