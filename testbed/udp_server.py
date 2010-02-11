@@ -12,7 +12,7 @@ class SimpleUDPServer(DatagramProtocol):
                                 db="iphone_obd2",port=3306, connect_timeout=5)
         except OperationalError:
             return None
-        return db
+        print db
 
 
     def datagramReceived(self, datagram, address):
