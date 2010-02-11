@@ -27,6 +27,8 @@ class SimpleUDPServer(DatagramProtocol):
             print "Bad data: %s" % datagram
             return
         print "add %s entry for %s, value: %s" % (data[0], data[1], data[2])
+        query = """insert into `data` values (NULL,"%s","%s","%s",NOW(),NOW())""" %(data[0],data[1],data[2])
+        self.cursor.execute(query)
 
 reactor.listenUDP(8005, SimpleUDPServer())
 reactor.run()
