@@ -15,6 +15,8 @@
 @synthesize lm;
 @synthesize gpsstr;
 @synthesize accelstr;
+@synthesize sockfd;
+@synthesize addr;
 
 
 /*
@@ -50,6 +52,19 @@
    [lm startUpdatingLocation];
    [[UIAccelerometer sharedAccelerometer] setUpdateInterval:0.1];
    [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+   
+   int ret;
+   struct addrinfo *result;
+   ret = getaddrinfo("msee140lnx10.ecn.purdue.edu", "8005", NULL, &result);
+   for(addr = result; addr != NULL; addr = addr->ai_next) {
+      if ((sockfd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol)) == -1) {
+         perror("talker: socket");
+         continue;
+      }
+      
+      break;
+   }
+   
    NSLog(@"did viewdidload");
 }
 
@@ -82,6 +97,27 @@
    gpsstr = [[NSString alloc] initWithFormat:@"Location: %@", [newLocation description]];
    NSLog(@"%@", gpsstr);
    textView.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
+   
+   char *p;
+   p = [[NSString stringWithFormat:@"243:4:%.10f", [newLocation coordinate].latitude]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:5:%0.10f", [newLocation coordinate].longitude]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:6:%.2f", [newLocation course]]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:7:%.2f", [newLocation horizontalAccuracy]]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:8:%.2f", [newLocation verticalAccuracy]]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:9:%.2f", [newLocation speed]]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   
 }
 
 - (void)locationManager:(CLLocationManager *)manager
@@ -100,6 +136,17 @@
    accelstr = [[NSString alloc] initWithFormat:@"Acceleration: x: %.2f y: %.2f z: %.2f ", acceleration.x, acceleration.y, acceleration.z];
    NSLog(@"%@", accelstr);
    textView.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
+   
+   char *p;
+   p = [[NSString stringWithFormat:@"243:1:%.2f", acceleration.x]
+         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:2:%.2f", acceleration.y]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   p = [[NSString stringWithFormat:@"243:3:%.2f", acceleration.z]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
 }
 
 - (void)dealloc {
