@@ -83,11 +83,35 @@
                 iPhone device ID to provision projects
             -iPhone "stalker" app completed - uses GPS and accelerometer
             -contacted ODBKey company and asked for SDK, awaiting reply
+
         Meeting Summary:
-            -
+            -Progress briefing
+            -Received OBD-Key device from Joey
+
         Assigned Tasks:
-            -
+            -Tie together socket server and database
+            -Successfully log data in DB sent over socket
+
     Feb 12, 2010:
+        Deliverables:
+            -Configured server to allow socket connects on port
+                8005 (UDP and TCP) -- thanks Aaron!
+            -Investigate SQLAlchemy module for Python
+            -Wrote more robust socket server (UDP) using Twisted
+            -Added database functionality to server
+            -Developed socket protocol (VIN:PARAM:VALUE)
+            -Successful logged simply test data over socket connection
+            -Initial testing of OBD-key by Jevin
+            -Updated "stalker" app to connect to socket and log
+
+        Meeting Summary:
+            - TODO: discuss UDP vs TCP for server
+            - TODO: check on iPhone device status
+            -
+
+        Assigned Tasks:
+            - Jevin: Research SSID selection from App
+    
     Feb 19, 2010:
     Feb 26, 2010:
     Mar 5, 2010:
