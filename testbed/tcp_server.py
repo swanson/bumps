@@ -2,8 +2,10 @@ from twisted.internet.protocol import Protocol, Factory
 from twisted.internet import reactor
 from MySQLdb import *
 from getpass import *
+import ConfigParser
+from twisted.protocols.basic import LineReceiver
 
-class TCPLoggingServer(Protocol):
+class TCPLoggingServer(LineReceiver):
     
     def connectionMade(self):
         self.transport.write("connectionMade\r\n") 
@@ -11,10 +13,10 @@ class TCPLoggingServer(Protocol):
     def connectionLost(self, reason):
         print "lost a connection", reason
 
-    def dataReceived(self, line):
+    def lineReceived(self, line):
         print line,
         #self.transport.write("server:" + line)
-        logToDatabase(line)
+        self.logToDatabase(line)
 
     def logToDatabase(self, datagram):
         data = datagram.split(':')
@@ -32,9 +34,16 @@ class TCPLoggingFactory(Factory):
     def __init__(self):
         print "starting server"
         try:
-            pw = getpass()
-            self.db = connect(host="localhost",user="iphone_S10",passwd=pw, \
-                                db="iphone_obd2",port=3306, connect_timeout=5)
+            config = ConfigParser.ConfigParser()
+            config.read("db.conf")
+            pw = config.get("database", "passwd")
+            hostname = config.get("database", "host")
+            usr = config.get("database", "user")
+            dbn = config.get("database", "db")
+            p = config.get("database", "port")
+            timeout = config.get("database", "timeout")
+            self.db = connect(host=hostname,user=usr,passwd=pw, \
+                                db=dbn,port=int(p), connect_timeout=int(timeout))
         except OperationalError:
             print "Error!"
             return
