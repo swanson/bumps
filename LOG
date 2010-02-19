@@ -105,12 +105,14 @@
             -Updated "stalker" app to connect to socket and log
 
         Meeting Summary:
-            - TODO: discuss UDP vs TCP for server
-            - TODO: check on iPhone device status
-            -
+            - Progress briefing
+            - Discussed UDP vs TCP for server
+            - Checked on iPhone device status, found out they were
+                finally ordered and should be here within a week
 
         Assigned Tasks:
             - Jevin: Research SSID selection from App
+            - Matt: modify server to use TCP, add additional DB methods
     
     Feb 19, 2010:
     Feb 26, 2010:
