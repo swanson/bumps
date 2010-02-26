@@ -105,15 +105,44 @@
             -Updated "stalker" app to connect to socket and log
 
         Meeting Summary:
-            - TODO: discuss UDP vs TCP for server
-            - TODO: check on iPhone device status
+            -Progress briefing
+            -Discussed UDP vs TCP for server
+            -Checked on iPhone device status, found out they were
+                finally ordered and should be here within a week
+
+        Assigned Tasks:
+            -Jevin: Research SSID selection from App
+            http://stackoverflow.com/questions/2018110/accessing-using-the-mobilewifi-framework/2052643
+            -Matt: modify server to use TCP, add additional DB methods
+    
+    Feb 19, 2010:
+        Deliverables:
+            -Modified server to use TCP
+            -Determined it was possible to change WiFi network programmatically
+                however it requires private APIs so no App Store
+
+        Meeting Summary:
+            -Progress briefing
+            -Discussed timeline for demo
+            -Joey got us an iPhone -- hurray!
+            
+        Assigned Tasks:
+            -Matt/Jevin work on OBDKey, get it working
+            -Finish dev certificate setup now that we have iPhone
+            -Goal: aim for demo in 3-4 weeks
+
+    Feb 26, 2010:
+        Deliverables:
+            -Confirmed OBDKey worked in Matt's car using their software
+            -Successfully talked with OBDKey over telnet
+            -Able to log data and verify it was reasonable as the vehicle was driving
+
+        Meeting Summary:
             -
 
         Assigned Tasks:
-            - Jevin: Research SSID selection from App
-    
-    Feb 19, 2010:
-    Feb 26, 2010:
+            -
+
     Mar 5, 2010:
     Mar 12, 2010:
     Mar 19, 2010:

@@ -19,7 +19,7 @@ class SimpleUDPServer(DatagramProtocol):
     def datagramReceived(self, datagram, address):
         print "Received:" + repr(datagram)
         self.transport.write("data received %s" %repr(datagram), address)
-        self.logToDatabase(datagram) 
+        self.logToDatabase(datagram)
 
     def logToDatabase(self, datagram):
         data = datagram.split(':')
