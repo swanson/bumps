@@ -11,6 +11,15 @@ class DatabaseServiceProvider():
                        "0C": self.rpm,
                        "0D": self.mph,
                        "11": self.throttle,
+                       "AX": self.accelerometer,
+                       "AY": self.accelerometer,
+                       "AZ": self.accelerometer,
+                       "LA": self.gpsCoordinate,
+                       "LO": self.gpsCoordinate,
+                       "CO": self.gpsData,
+                       "HA": self.gpsData,
+                       "VA": self.gpsData,
+                       "SP": self.gpsData,
         }
 
     def supported(self, bytes):
@@ -57,6 +66,15 @@ class DatabaseServiceProvider():
             print "Error! PID:11 - one byte only"
             return None
         return x * 100.0 / 255.0
+
+    def accelerometer(self, bytes):
+        return bytes
+
+    def gpsCoordinate(self, bytes):
+        return bytes
+
+    def gpsData(self, bytes):
+        return bytes
 
     def decodePIDValue(self, pid, bytes):
         try:
