@@ -17,17 +17,7 @@ class TCPLoggingServer(LineReceiver):
     def lineReceived(self, line):
         print line,
         #self.transport.write("server:" + line)
-        self.logToDatabase(line)
-
-    def logToDatabase(self, datagram):
-        data = datagram.split(':')
-        if len(data) < 3:
-            print "Bad data: %s" % datagram
-            return
-        print "add %s entry for %s, value: %s" % (data[0], data[1], data[2])
-        query = """insert into `data` values (NULL,"%s","%s","%s",NOW(),NOW())""" %(data[0],data[1],data[2])
-        self.factory.cursor.execute(query)
-
+        self.factory.dsp.logToDatabase(line)
 
 class TCPLoggingFactory(Factory):
     protocol = TCPLoggingServer
@@ -50,6 +40,7 @@ class TCPLoggingFactory(Factory):
             return
         print self.db
         self.cursor = self.db.cursor()
+        self.dsp = DatabaseServiceProvider(self.db)
 
 reactor.listenTCP(8005, TCPLoggingFactory())
 reactor.run()
