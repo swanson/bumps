@@ -4,6 +4,7 @@ from MySQLdb import *
 from getpass import *
 import ConfigParser
 from twisted.protocols.basic import LineReceiver
+from DatabaseServiceProvider import DatabaseServiceProvider
 
 class TCPLoggingServer(LineReceiver):
     
