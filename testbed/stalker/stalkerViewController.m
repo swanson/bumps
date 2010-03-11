@@ -102,6 +102,15 @@
    // turn echo off
    send(keyfd, "ATE0\r", strlen("ATE0\r"), 0);
    
+	[[NSRunLoop currentRunLoop] addTimer:
+     [NSTimer timerWithTimeInterval:0.1
+                             target:self
+                           selector:@selector(read_obd:)
+                           userInfo:nil
+                            repeats:YES]
+                                 forMode:NSDefaultRunLoopMode];
+	
+	
    NSLog(@"did viewdidload");
 }
 
