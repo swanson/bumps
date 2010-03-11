@@ -1,4 +1,5 @@
 *.sw*
+*.pyc
 # xcode noise
 build/
 *.pbxuser
