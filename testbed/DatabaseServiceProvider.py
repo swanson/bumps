@@ -24,14 +24,14 @@ class DatabaseServiceProvider():
 
     def supported(self, bytes):
         return None
-    
+
     def engineLoad(self, bytes): #unit: percent, 0-100
         x = int(bytes, 16)
         if x > 255:
             print "Error! PID:04 - one byte only"
             return None
         return x * 100.0 / 255.0
-        
+
     def coolantTemp(self, bytes): #unit: degC, -40-215
         x = int(bytes, 16)
         if x > 255:
@@ -90,7 +90,7 @@ class DatabaseServiceProvider():
           print "Bad data: %s" % data
           return
         value = self.decodePIDValue(data[1], data[2])
-        if value:
+        if value is not None:
             print "PID: %s, add %s to db for VIN:%s" % (data[1], value, data[0])
             self.insert(data[0],data[1],value)
         else:
@@ -98,7 +98,7 @@ class DatabaseServiceProvider():
 
     def insert(self, vin, pid, data):
         query = """
-                insert into `data` 
+                insert into `data`
                   values(NULL,"%s","%s","%s",NOW(),NOW())
                 """ % (vin, pid, data)
         self.cursor.execute(query)
