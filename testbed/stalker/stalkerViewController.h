@@ -26,6 +26,8 @@
    NSString *accelstr;
    int sockfd;
    struct addrinfo *addr;
+   int keyfd;
+   struct addrinfo *key_addr;
 }
 
 @property (nonatomic, retain) UITextView *textView;
@@ -34,6 +36,8 @@
 @property (nonatomic, retain) NSString *accelstr;
 @property (nonatomic) int sockfd;
 @property (nonatomic) struct addrinfo *addr;
+@property (nonatomic) int keyfd;
+@property (nonatomic) struct addrinfo *key_addr;
 
 - (void)locationManager:(CLLocationManager *)manager
    didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
@@ -42,6 +46,8 @@
        didFailWithError:(NSError *)error;
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration;
+
+- (void)read_obd;
 
 
 @end

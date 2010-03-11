@@ -7,6 +7,7 @@
 //
 
 #import "stalkerViewController.h"
+#import <assert.h>
 
 
 @implementation stalkerViewController
@@ -17,6 +18,8 @@
 @synthesize accelstr;
 @synthesize sockfd;
 @synthesize addr;
+@synthesize keyfd;
+@synthesize key_addr;
 
 
 /*
@@ -54,8 +57,16 @@
    [[UIAccelerometer sharedAccelerometer] setDelegate:self];
    
    int ret;
-   struct addrinfo *result;
-   ret = getaddrinfo("msee140lnx10.ecn.purdue.edu", "8005", NULL, &result);
+   struct addrinfo *result, hints;
+   
+   // connect to the DB server
+   memset(&hints, 0, sizeof hints);
+   hints.ai_family = AF_INET; // set to AF_INET to force IPv4
+   hints.ai_socktype = SOCK_STREAM;
+   hints.ai_flags = AI_PASSIVE; // use my IP
+   
+   ret = getaddrinfo("msee140lnx10.ecn.purdue.edu", "8005", &hints, &result);
+   assert(ret == 0);
    for(addr = result; addr != NULL; addr = addr->ai_next) {
       if ((sockfd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol)) == -1) {
          perror("talker: socket");
@@ -65,9 +76,71 @@
       break;
    }
    
+   connect(sockfd, addr->ai_addr, addr->ai_addrlen);
+   
+   // connect to the OBDkey
+   memset(&hints, 0, sizeof hints);
+   hints.ai_family = AF_INET; // set to AF_INET to force IPv4
+   hints.ai_socktype = SOCK_STREAM;
+   hints.ai_flags = AI_PASSIVE; // use my IP
+   
+   ret = getaddrinfo("192.168.0.74", "23", &hints, &result);
+   assert(ret == 0);
+   for(key_addr = result; key_addr != NULL; key_addr = key_addr->ai_next) {
+      if ((keyfd = socket(key_addr->ai_family, key_addr->ai_socktype, key_addr->ai_protocol)) == -1) {
+         perror("talker: socket");
+         continue;
+      }
+      
+      break;
+   }
+   
+   connect(keyfd, key_addr->ai_addr, key_addr->ai_addrlen);
+   
+   // reset the key
+   send(keyfd, "ATZ\r", strlen("ATZ\r"), 0);
+   // turn echo off
+   send(keyfd, "ATE0\r", strlen("ATE0\r"), 0);
+   
    NSLog(@"did viewdidload");
 }
 
+
+- (void)read_obd {
+   char c;
+   char buf[512];
+   char *p;
+   const char *s;
+   int ret;
+   
+   // clear the buffer
+   while (recv(keyfd, &c, 1, 0) > 0);
+   
+   // request the throttle position
+   send(keyfd, "0111\r", 5, 0);
+   
+   // get the response
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret <= 0)
+      {
+         break;
+      }
+      
+      *(p++) = c;
+   } while (c != '\r');
+   *p = '\0';
+   
+   // change pointer to point to begining of data
+   p -= 2;
+   
+   s = [[NSString stringWithFormat:@"243:11:%s\r\n", p]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   send(sockfd, s, strlen(s), 0);
+   
+   
+}
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -98,25 +171,25 @@
    NSLog(@"%@", gpsstr);
    textView.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
    
-   char *p;
-   p = [[NSString stringWithFormat:@"243:4:%.10f", [newLocation coordinate].latitude]
+   const char *p;
+   p = [[NSString stringWithFormat:@"243:4:%.10f\r\n", [newLocation coordinate].latitude]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:5:%0.10f", [newLocation coordinate].longitude]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:5:%0.10f\r\n", [newLocation coordinate].longitude]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:6:%.2f", [newLocation course]]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:6:%.2f\r\n", [newLocation course]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:7:%.2f", [newLocation horizontalAccuracy]]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:7:%.2f\r\n", [newLocation horizontalAccuracy]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:8:%.2f", [newLocation verticalAccuracy]]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:8:%.2f\r\n", [newLocation verticalAccuracy]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:9:%.2f", [newLocation speed]]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:9:%.2f\r\n", [newLocation speed]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   send(sockfd, p, strlen(p), 0);
    
 }
 
@@ -137,16 +210,16 @@
    NSLog(@"%@", accelstr);
    textView.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
    
-   char *p;
-   p = [[NSString stringWithFormat:@"243:1:%.2f", acceleration.x]
+   const char *p;
+   p = [[NSString stringWithFormat:@"243:1:%.2f\r\n", acceleration.x]
          cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:2:%.2f", acceleration.y]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:2:%.2f\r\n", acceleration.y]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
-   p = [[NSString stringWithFormat:@"243:3:%.2f", acceleration.z]
+   send(sockfd, p, strlen(p), 0);
+   p = [[NSString stringWithFormat:@"243:3:%.2f\r\n", acceleration.z]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   sendto(sockfd, p, strlen(p), 0, addr->ai_addr, addr->ai_addrlen);
+   send(sockfd, p, strlen(p), 0);
 }
 
 - (void)dealloc {

@@ -1,0 +1,460 @@
+Last login: Thu Feb 25 18:46:07 on ttys004
+wombat:~ jevin$ nc -t 192.168.0.74 23
+ATZ
+ATZ
+^Cwombat:~ jevin$ nc -t 192.168.0.74 23
+ATZ
+ATZ
+^Cwombat:~ jevin$ man nc
+wombat:~ jevin$ man nc
+wombat:~ jevin$ echo -n "ATZ\r" | nc -t 192.168.0.74 23
+^Cwombat:~ jevinecho -n "ATZ\r"
+ATZ\rwombat:~ jevin$ echo -e -n "ATZ\r"
+wombat:~ jevin$ echo -e "ATZ\r"
+ATZ
+wombat:~ jevin$ echo -e "ATZ\r" | nc -t 192.168.0.74 23
+^Cwombat:~ jevinman nc
+wombat:~ jevin$ echo -n "ATZ\r" | nc 192.168.0.74 23
+^Cwombat:~ jevinnc -t 192.168.0.74 23
+ATZ
+^Cwombat:~ jevin$ ping 192.168.0.74
+PING 192.168.0.74 (192.168.0.74): 56 data bytes
+64 bytes from 192.168.0.74: icmp_seq=0 ttl=64 time=2.733 ms
+64 bytes from 192.168.0.74: icmp_seq=1 ttl=64 time=2.732 ms
+64 bytes from 192.168.0.74: icmp_seq=2 ttl=64 time=2.864 ms
+^C
+--- 192.168.0.74 ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 2.732/2.776/2.864/0.062 ms
+wombat:~ jevin$ nc -t 192.168.0.74 23
+ATZ
+^Cwombat:~ jevinman nc
+wombat:~ jevin$ man nc
+wombat:~ jevin$ socat realine tcp:192.168.0.74:23,cr
+2010/02/25 19:01:49 socat[12825] E unknown device/address "realine"
+wombat:~ jevin$ socat realine tcp:192.168.0.74:23,crm
+wombat:~ jevin$ man socat
+wombat:~ jevin$ socat realine: tcp:192.168.0.74:23,cr
+2010/02/25 19:02:28 socat[12862] E unknown device/address "realine"
+wombat:~ jevin$ socat readline tcp:192.168.0.74:23,cr
+ATZ
+ATZ
+?
+
+>?
+
+>
+OBDKey 1.30
+
+>ATMT00
+ATMT00
+OK
+
+>ATSP0
+ATSP0
+OK
+
+>ATL1
+ATL1
+OK
+
+
+
+>ATIF
+ATIF
+
+
+
+03
+
+>0100
+0100
+
+SEARCHING...
+
+41 00 BE 3E B8 10 
+
+
+
+>wombat:~ jevin$ 
+wombat:~ jevin$ socat readline tcp:192.168.0.74:23,cr
+2010/02/25 19:10:07 socat[13157] E connect(3, LEN=16 AF=2 192.168.0.74:23, 16): Connection refused
+wombat:~ jevin$ socat readline tcp:192.168.0.74:23,cr
+ATZ
+ATZ
+OBDKey 1.30
+
+>ATI
+ATI
+OBDKey 1.30
+
+>ATE0
+ATE0
+OK
+
+>ATI
+OBDKey 1.30
+
+>AT@1
+KBM Systems Ltd.
+
+>AT@2
+?
+>AT RV
+14.4V
+
+>0100
+41 00 BE 3E B8 10 
+
+>010C
+41 0C 0A 82 
+
+>010C
+41 0C 0A B2 
+
+>010C
+41 0C 0A 96 
+
+>010C
+41 0C 1C 0F 
+
+>0111
+41 11 19 
+
+>010D
+41 0D 00 
+
+>010D
+41 0D 00 
+
+>010D
+41 0D 01 
+
+>010D
+41 0D 01 
+
+>010D
+41 0D 02 
+
+>010D
+41 0D 04 
+
+>010D
+41 0D 04 
+
+>010D
+41 0D 01 
+
+>010D
+41 0D 00 
+
+>010D
+41 0D 0C 
+
+>010D
+41 0D 0F 
+
+>010D
+41 0D 12 
+
+>010D
+41 0D 14 
+
+>010D
+41 0D 15 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 1F 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 2A 
+
+>0111
+41 11 2B 
+
+>0111
+41 11 35 
+
+>0111
+41 11 57 
+
+>0111
+41 11 7F 
+
+>0111
+41 11 6F 
+
+>010D
+41 0D 29 
+
+>010D
+41 0D 28 
+
+>010D
+41 0D 28 
+
+>010C
+NO DATA
+
+>010C
+41 0C 0A DA 
+
+>010C
+41 0C 0A BF 
+
+>010C
+41 0C 0A A8 
+
+>010C
+41 0C 0A B5 
+
+>010C
+41 0C 15 3A 
+
+>010C
+41 0C 0D 0A 
+
+>010C
+41 0C 0D 2A 
+
+>010C
+41 0C 19 9D 
+
+>010C
+41 0C 21 33 
+
+>010C
+41 0C 1C AE 
+
+>010C
+41 0C 1E 72 
+
+>010C
+41 0C 20 52 
+
+>0111
+NO DATA
+
+>0111
+41 11 30 
+
+>0111
+41 11 30 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>41 11 19 
+
+>0111
+41 11 19 
+
+>010C
+41 0C 17 52 
+
+>010C
+41 0C 1B 06 
+
+>010C
+41 0C 1E AF 
+
+>010C
+41 0C 1A F7 
+
+>010C
+41 0C 1C 22 
+
+>010C
+41 0C 1A FE 
+
+>010C
+41 0C 0F B4 
+
+>010D
+41 0D 18 
+
+>010D
+41 0D 15 
+
+>010D
+41 0D 15 
+
+>010D
+41 0D 17 
+
+>010D
+41 0D 1E 
+
+>010D
+41 0D 20 
+
+>010D
+41 0D 21 
+
+>010D
+41 0D 22 
+
+>010D
+41 0D 21 
+
+>010D
+41 0D 21 
+
+>010D
+41 0D 20 
+
+>010D
+41 0D 20 
+
+>010D
+41 0D 1E 
+
+>010C
+41 0C 0E 3D 
+
+>010C
+41 0C 0B 91 
+
+>0111
+NO DATA
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+41 11 25 
+
+>0111
+41 11 26 
+
+>0111
+41 11 27 
+
+>0111
+41 11 28 
+
+>0111
+41 11 2E 
+
+>0111
+41 11 2F 
+
+>0111
+41 11 2D 
+
+>0111
+41 11 22 
+
+>0111
+41 11 21 
+
+>0111
+41 11 21 
+
+>0111
+41 11 21 
+
+>010C
+41 0C 12 F2 
+
+>010C
+41 0C 13 6C 
+
+>0110
+NO DATA
+
+>0110
+NO DATA
+
+>0110
+NO DATA
+
+>010C
+41 0C 0B 29 
+
+>010D
+41 0D 00 
+
+>010D
+41 0D 00 
+
+>010D
+41 0D 00 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>0111
+NO DATA
+
+>0111
+41 11 19 
+
+>0111
+41 11 21 
+
+>0111
+41 11 21 
+
+>0111
+41 11 1E 
+
+>0111
+41 11 1E 
+
+>0111
+41 11 19 
+
+>0111
+41 11 19 
+
+>wombat:~ jevin$ 
