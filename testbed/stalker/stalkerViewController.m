@@ -48,12 +48,15 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+   char *p, c;
+   char buf[512] = {0};
+   
    gpsstr = [[NSString alloc] initWithString:@"n/a"];
    accelstr = [[NSString alloc] initWithString:@"n/a"];
    lm = [[CLLocationManager alloc] init];
    lm.delegate = self; // send loc updates to myself
    [lm startUpdatingLocation];
-   [[UIAccelerometer sharedAccelerometer] setUpdateInterval:0.1];
+   [[UIAccelerometer sharedAccelerometer] setUpdateInterval:0.5];
    [[UIAccelerometer sharedAccelerometer] setDelegate:self];
    
    int ret;
@@ -99,13 +102,44 @@
    
    // reset the key
    send(keyfd, "ATZ\r", strlen("ATZ\r"), 0);
+   
+   sleep(1);
+   
+   fcntl(keyfd, F_SETFL, O_NONBLOCK);
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret > 0)
+      {
+         *(p++) = c;
+      }
+   } while (ret > 0);
+   fcntl(keyfd, F_SETFL, 0);
+   
+   memset(buf, 0, 512);
+   
    // turn echo off
    send(keyfd, "ATE0\r", strlen("ATE0\r"), 0);
    
+   sleep(1);
+   
+   fcntl(keyfd, F_SETFL, O_NONBLOCK);
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret > 0)
+      {
+         *(p++) = c;
+      }
+   } while (ret > 0);
+   fcntl(keyfd, F_SETFL, 0);
+   
+   sleep(1);
+   
 	[[NSRunLoop currentRunLoop] addTimer:
-     [NSTimer timerWithTimeInterval:0.1
+     [NSTimer timerWithTimeInterval:1.5
                              target:self
-                           selector:@selector(read_obd:)
+                           selector:@selector(read_obd)
                            userInfo:nil
                             repeats:YES]
                                  forMode:NSDefaultRunLoopMode];
@@ -117,16 +151,44 @@
 
 - (void)read_obd {
    char c;
-   char buf[512];
+   char buf[512] = {0};
    char *p;
    const char *s;
    int ret;
    
-   // clear the buffer
-   while (recv(keyfd, &c, 1, 0) > 0);
-   
    // request the throttle position
    send(keyfd, "0111\r", 5, 0);
+      
+   // get the response
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret <= 0)
+      {
+         break;
+      }
+      
+      *(p++) = c;
+   } while (c != '>');
+   p -= 4;
+   *p = '\0';
+   
+   // change pointer to point to begining of data
+   p -= 2;
+   
+   s = [[NSString stringWithFormat:@"243:11:%s\r\n", p]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   if (s != nil)
+   {
+      send(sockfd, s, strlen(s), 0);
+   }
+   else {
+      buf[10] = '\0';
+      NSLog(@"s is nil, %s", buf);
+   }
+   
+   // request the speed
+   send(keyfd, "010D\r", 5, 0);
    
    // get the response
    p = buf;
@@ -138,15 +200,154 @@
       }
       
       *(p++) = c;
-   } while (c != '\r');
+   } while (c != '>');
+   p -= 4;
    *p = '\0';
    
    // change pointer to point to begining of data
    p -= 2;
    
-   s = [[NSString stringWithFormat:@"243:11:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"243:0D:%s\r\n", p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-   send(sockfd, s, strlen(s), 0);
+   if (s != nil)
+   {
+      send(sockfd, s, strlen(s), 0);
+   }
+   else {
+      buf[10] = '\0';
+      NSLog(@"s is nil, %s", buf);
+   }
+   
+   
+   // request the rpm
+   send(keyfd, "010C\r", 5, 0);
+   
+   // get the response
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret <= 0)
+      {
+         break;
+      }
+      
+      *(p++) = c;
+   } while (c != '>');
+   p -= 4;
+   *p = '\0';
+   
+   // change pointer to point to begining of data
+   p -= 5;
+   p[2] = p[3];
+   p[3] = p[4];
+   p[5] = '\0';
+   
+   s = [[NSString stringWithFormat:@"243:0C:%s\r\n", p]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   if (s != nil)
+   {
+      send(sockfd, s, strlen(s), 0);
+   }
+   else {
+      buf[10] = '\0';
+      NSLog(@"s is nil, %s", buf);
+   }
+   
+   
+   // request the engine load
+   send(keyfd, "0104\r", 5, 0);
+   
+   // get the response
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret <= 0)
+      {
+         break;
+      }
+      
+      *(p++) = c;
+   } while (c != '>');
+   p -= 4;
+   *p = '\0';
+   
+   // change pointer to point to begining of data
+   p -= 2;
+   
+   s = [[NSString stringWithFormat:@"243:04:%s\r\n", p]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   if (s != nil)
+   {
+      send(sockfd, s, strlen(s), 0);
+   }
+   else {
+      buf[10] = '\0';
+      NSLog(@"s is nil, %s", buf);
+   }
+
+   // request the coolant temp
+   send(keyfd, "0105\r", 5, 0);
+   
+   // get the response
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret <= 0)
+      {
+         break;
+      }
+      
+      *(p++) = c;
+   } while (c != '>');
+   p -= 4;
+   *p = '\0';
+   
+   // change pointer to point to begining of data
+   p -= 2;
+   
+   s = [[NSString stringWithFormat:@"243:05:%s\r\n", p]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   if (s != nil)
+   {
+      send(sockfd, s, strlen(s), 0);
+   }
+   else {
+      buf[10] = '\0';
+      NSLog(@"s is nil, %s", buf);
+   }
+   
+   
+   
+   // request the fuel pressure
+   send(keyfd, "010A\r", 5, 0);
+   
+   // get the response
+   p = buf;
+   do {
+      ret = recv(keyfd, &c, 1, 0);
+      if (ret <= 0)
+      {
+         break;
+      }
+      
+      *(p++) = c;
+   } while (c != '>');
+   p -= 4;
+   *p = '\0';
+   
+   // change pointer to point to begining of data
+   p -= 2;
+   
+   s = [[NSString stringWithFormat:@"243:0A:%s\r\n", p]
+        cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
+   if (s != nil)
+   {
+      send(sockfd, s, strlen(s), 0);
+   }
+   else {
+      buf[10] = '\0';
+      NSLog(@"s is nil, %s", buf);
+   }
    
    
 }
