@@ -1,5 +1,45 @@
-server side code for iphone-logger
+#####################################
+OBDII Logging Server (TCP)
+ECE495TUV - Spring 2010 VIP
+#####################################
+Make sure that the server is running before you attempt
+to log any data with the iPhone app or it will not work.
 
-may contain:
-socket server code
-database code
+#####################################
+LAUNCHING THE SERVER
+#####################################
+You should be in the iphone-logger directory.
+
+>> pwd
+/home/$NAME/iphone-logger
+
+>> nohup python server/tcp_server.py &
+
+
+#####################################
+SERVER SETUP AND CONFIGURATION
+#####################################
+Ensure that the `db.conf` settings file is located in the 
+iphone-logger directory.  This file contains the password 
+and requisite information to use the database.  This file
+is not in the git repository and is stored locally on the
+server (msee140lnx10.ecn.purdue.edu).
+
+The TCP Server runs on port 8005, so make sure that port
+is not being blocked by the firewall or else you will
+not be able to log data.  For assistance with this, contact
+Aaron Ault.
+
+You may verify the servers operation by connecting via
+Telnet.  The server expects data in the following, colon-
+delimited format on a single line:
+
+    log_id:obd_pid:data_bytes
+
+If the data is valid, it will be decoded and logged to the
+database.  If not, you should receive an error message.
+
+On a fresh install, use the `mysql-setup` file to rebuild
+the database structure.  The server will require Python,
+twisted, and the MySQLdb module to run the code.  These
+packages can be installed using apt-get.

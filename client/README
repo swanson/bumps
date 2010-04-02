@@ -1,4 +1,84 @@
-client side code for iphone-logger
+#####################################
+Bumps - iPhone OBDII Logging App
+ECE495TUV - Spring 2010 VIP
+#####################################
+The full source code and Xcode project files are in the Bumps
+directory.  You may open and build the project to Xcode.  Using
+the certificates and provisioning profiles from the Purdue
+internal developer portal, you can install the application onto
+specified iPhone devices.  The app has only been tested with the
+iPhone 3G model.
 
-may contain:
-iPhone source code
+The app itself is self-explanatory, but requires a small amount
+of prep work before using it.
+
+#####################################
+BEFORE LAUNCHING THE APPLICATION:
+#####################################
+The OBDKey WiFi device must be plugged into your car's OBDII port.
+See your car's manual if you are unsure where this is.  Currently,
+the application has only be tested on Honda Accords so be aware 
+that the app may not work on a different model.
+
+Due to API restrictions in the iPhone SDK, you must connect your
+iPhone to the OBDKey WiFi network manually before using the app.
+The iPhone will be communication with the car computer over WiFi
+and logging data back to the server over 3G; ensure that both of
+these services are enabled, active and have good signal strength
+for best operation.
+
+Secure the iPhone to the cupholder attachment.  DO NOT ATTEMPT TO
+OPERATE THE iPHONE OR MONITOR THE SERVER WITH A LAPTOP WHILE
+DRIVING!  Once you have launched the application, there should be
+no need for you to interact with it until you are done logging
+data.
+
+#####################################
+AFTER LAUNCHING THE APPLICATION:
+#####################################
+At the top of the screen, enter a logging ID using the
+onscreen keyboard.  This will be used to retrieve the data from 
+the database at a later time.  The ID can be a string of up to
+20 characters, but only alphanumeric characters are recommended.
+
+Use the slider to turn logging on once you have reached your
+starting destination and set the correct logging ID.  The current
+data values are displayed in real-time on the iPhone.  This
+serves mainly as a sanity check that the iPhone is successfully
+communicating with the OBDKey and that the GPS and accelerometer
+are working.  If you see the values updating, then it is a safe
+bet that everything is working correctly and your data is being
+logged.
+
+#####################################
+AFTER COMPLETEING DATA LOGGING:
+#####################################
+When you are finished logging data and are safely in park, use
+the slider to turn logging off.  The last data values will persist
+on the screen, but no new data will be sent to the database.
+
+Close the application and turn off the iPhone to save batteries.
+At this time, it is also recommended that you unplug the OBDKey
+WiFi device, as it will still draw power from the car battery when
+not in use and even when the engine is off.
+
+To view your data, you may run a SQL query against the MySQL
+database or view it directly using the phpMyAdmin tool installed
+on the server.
+
+TROUBLESHOOTING:
+If the application crashes, doesn't update the sensor values or 
+doesn't appear to be logging anything to the database, perform
+the following steps:
+
+    1) Ensure you still have a solid WiFi and 3G connect to
+        the OBDKey and database respectively
+    2) Restart the application
+    3) Unplug and re-plug in the OBDKey device; it sometimes
+        gets into an error state and the easiest way to fix
+        it is to just do a hard-reset
+    4) Verify the server is operational via Telnet
+
+If none of these steps solves the problem, then you are probably
+out of luck.  Flip a coin, if heads: blame Joey, if tails: blame
+Apple.

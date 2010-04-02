@@ -149,7 +149,7 @@
     Mar 5, 2010:
         NO MEETING - Aaron unavailable
         
-        Assign Tasks:
+        Assigned Tasks:
             -Work on VIP poster that we apparently need now
 
     Mar 12, 2010:
@@ -157,4 +157,33 @@
 
     Mar 19, 2010:
         NO MEETING - Spring Break
+
+    Mar 26, 2010:
+        Deliverables:
+            -Implemented full working prototype, everything working on
+                iPhone
+            -Logged test data in Jevin's car to the database
+            -Completed logging server data conversions (byte encodings)
+            -Joey plotted some data for us
+
+        Meeting Summary:
+            -Reviewed deliverables
+            -Discussed need (or lack thereof) of callout poster
+            -New VIP lab rules because some kids were being loud or something
+            -Completion goals: next week - documentation, 2 weeks - full demo
+
+        Assigned Tasks:
+            -Write some documentation for app, launching server, etc
+            -Major refactor of iPhone code
+
+    April 2, 2010:
+        Deliverables:
+            -iPhone app refactoring in progress, ~75% done
+            -New UI with demo on our phone
+            -Small writeup on how to launch the server
+
+        Meeting Summary:
+        Assigned Tasks:
+
+    April 9, 2010:
 
