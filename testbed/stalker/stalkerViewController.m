@@ -13,6 +13,7 @@
 @implementation stalkerViewController
 
 @synthesize textView;
+@synthesize b;
 @synthesize lm;
 @synthesize gpsstr;
 @synthesize accelstr;
@@ -35,6 +36,8 @@
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
+	b = [[UIButton buttonWithType:UIButtonTypeRoundedRect] initWithFrame:CGRectMake(50, 30, 200, 80)];
+	//[b setTitle:@"Button"];
    textView = [[UITextView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
    textView.textColor = [UIColor whiteColor];
    textView.backgroundColor = [UIColor blackColor];
@@ -42,6 +45,7 @@
    textView.editable = FALSE;
    textView.text = @"Now is the time for all good developers to come to serve their country.\n\nNow is the time for all good developers to come to serve their country.";
    self.view = textView;
+	[self.view addSubview:b];
 }
 
 

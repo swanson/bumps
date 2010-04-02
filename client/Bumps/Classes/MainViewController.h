@@ -17,19 +17,22 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <fcntl.h>
+#include "LocationDataProvider.h"
 
 
-
-@interface MainViewController : UIViewController <UITextViewDelegate> {
+@interface MainViewController : UIViewController <UITextViewDelegate, UITextFieldDelegate> {
 	UITextView *textView;
 	UIButton *logButton;
 	UILabel *label;
+	UITextField *logIDField;
+	LocationDataProvider *ldp;
 	
 }
 
 @property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UIButton *logButton;
 @property (nonatomic, retain) UILabel *label;
-
+@property (nonatomic, retain) UITextField *logIDField;
+@property (nonatomic, retain) LocationDataProvider *ldp;
 
 @end

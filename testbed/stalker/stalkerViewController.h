@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CoreeLocation.h>
 
 #include <unistd.h>
 #include <errno.h>
@@ -30,9 +30,11 @@
    struct addrinfo *addr;
    int keyfd;
    struct addrinfo *key_addr;
+	UIButton *b;
 }
 
 @property (nonatomic, retain) UITextView *textView;
+@property (nonatomic, retain) UIButton *b;
 @property (nonatomic, retain) CLLocationManager *lm;
 @property (nonatomic, retain) NSString *gpsstr;
 @property (nonatomic, retain) NSString *accelstr;

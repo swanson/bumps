@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>stalker_logo_small</string>
 	<key>CFBundleIdentifier</key>
-	<string>edu.purdue.ecn.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>A4RKSA8G44.com.purdue.obdII</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

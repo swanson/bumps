@@ -13,6 +13,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		C1CD559C116568970046C71D /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1CD559B116568970046C71D /* MainViewController.m */; };
+		C1CD56CE11657D4F0046C71D /* LocationDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C1CD56CD11657D4F0046C71D /* LocationDataProvider.m */; };
+		C1CD5727116581180046C71D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1CD5726116581180046C71D /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,9 @@
 		8D1107310486CEB800E47090 /* Bumps-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Bumps-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		C1CD559A116568970046C71D /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C1CD559B116568970046C71D /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		C1CD56CC11657D4F0046C71D /* LocationDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDataProvider.h; sourceTree = "<group>"; };
+		C1CD56CD11657D4F0046C71D /* LocationDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationDataProvider.m; sourceTree = "<group>"; };
+		C1CD5726116581180046C71D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +42,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				C1CD5727116581180046C71D /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +56,8 @@
 				1D3623250D0F684500981E51 /* BumpsAppDelegate.m */,
 				C1CD559A116568970046C71D /* MainViewController.h */,
 				C1CD559B116568970046C71D /* MainViewController.m */,
+				C1CD56CC11657D4F0046C71D /* LocationDataProvider.h */,
+				C1CD56CD11657D4F0046C71D /* LocationDataProvider.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -70,6 +78,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				C1CD5726116581180046C71D /* CoreLocation.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -156,6 +165,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* BumpsAppDelegate.m in Sources */,
 				C1CD559C116568970046C71D /* MainViewController.m in Sources */,
+				C1CD56CE11657D4F0046C71D /* LocationDataProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,11 +202,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos3.1.2]" = "iPhone Developer: Matt Swanson (E6455WZ6HP)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos3.1.2]" = "792438DE-05D9-4B5F-B3DB-1E4C6BE54A19";
 				SDKROOT = iphoneos3.1.2;
 			};
 			name = Debug;
