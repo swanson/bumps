@@ -45,22 +45,22 @@
 	results.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
 	
 	const char *p;
-	p = [[NSString stringWithFormat:@"243:LA:%.10f\r\n", [newLocation coordinate].latitude]
+	p = [[NSString stringWithFormat:@"%@:LA:%.10f\r\n", logid, [newLocation coordinate].latitude]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:LO:%0.10f\r\n", [newLocation coordinate].longitude]
+	p = [[NSString stringWithFormat:@"%@:LO:%0.10f\r\n", logid, [newLocation coordinate].longitude]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:CO:%.2f\r\n", [newLocation course]]
+	p = [[NSString stringWithFormat:@"%@:CO:%.2f\r\n", logid, [newLocation course]]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:HA:%.2f\r\n", [newLocation horizontalAccuracy]]
+	p = [[NSString stringWithFormat:@"%@:HA:%.2f\r\n", logid, [newLocation horizontalAccuracy]]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:VA:%.2f\r\n", [newLocation verticalAccuracy]]
+	p = [[NSString stringWithFormat:@"%@:VA:%.2f\r\n", logid, [newLocation verticalAccuracy]]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:SP:%.2f\r\n", [newLocation speed]]
+	p = [[NSString stringWithFormat:@"%@:SP:%.2f\r\n", logid, [newLocation speed]]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
 	
@@ -84,13 +84,13 @@
 	results.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
 	
 	const char *p;
-	p = [[NSString stringWithFormat:@"243:AX:%.2f\r\n", acceleration.x]
+	p = [[NSString stringWithFormat:@"%@:AX:%.2f\r\n", logid, acceleration.x]
          cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:AY:%.2f\r\n", acceleration.y]
+	p = [[NSString stringWithFormat:@"%@:AY:%.2f\r\n", logid, acceleration.y]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
-	p = [[NSString stringWithFormat:@"243:AZ:%.2f\r\n", acceleration.z]
+	p = [[NSString stringWithFormat:@"%@:AZ:%.2f\r\n", logid, acceleration.z]
 		 cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
 	//send(sockfd, p, strlen(p), 0);
 }
