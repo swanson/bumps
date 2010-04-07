@@ -87,8 +87,13 @@ class DatabaseServiceProvider():
     def logToDatabase(self, data):
         data = data.split(':')
         if len(data) is not 3:
-          print "Bad data: %s" % data
-          return
+            print "Bad data: %s" % data
+            return
+        try:
+            float(data[2])
+        except ValueError:
+            print "Bad data: %s" % data
+            return
         value = self.decodePIDValue(data[1], data[2])
         if value is not None:
             print "PID: %s, add %s to db for VIN:%s" % (data[1], value, data[0])

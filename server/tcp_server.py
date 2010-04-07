@@ -7,16 +7,16 @@ from twisted.protocols.basic import LineReceiver
 from DatabaseServiceProvider import DatabaseServiceProvider
 
 class TCPLoggingServer(LineReceiver):
-    
+
     def connectionMade(self):
-        self.transport.write("connectionMade\r\n") 
+        print "connection established"
+        self.transport.write("connectionMade\r\n")
 
     def connectionLost(self, reason):
         print "lost a connection", reason
 
     def lineReceived(self, line):
-        print line,
-        #self.transport.write("server:" + line)
+        print "received: ",line
         self.factory.dsp.logToDatabase(line)
 
 class TCPLoggingFactory(Factory):
