@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import <stdint.h>
 #include <unistd.h>
@@ -23,12 +25,15 @@
 
 
 
-@interface ObdKey : NSObject {
+@interface ObdKey : UIViewController <UIAccelerometerDelegate,CLLocationManagerDelegate> {
 	int keySock;
 	int serverSock;
    UITextView *text;
    NSString *logId;
    NSTimer *timer;
+	CLLocationManager *lm;
+	NSString *gpsstr;
+	NSString *accelstr;
 }
 
 @property (nonatomic) int keySock;
@@ -36,6 +41,9 @@
 @property (nonatomic, retain) NSString *logId;
 @property (nonatomic, retain) UITextView *text;
 @property (nonatomic, retain) NSTimer *timer;
+@property (nonatomic, retain) CLLocationManager *lm;
+@property (nonatomic, retain) NSString *gpsstr;
+@property (nonatomic, retain) NSString *accelstr;
 
 - (NSString *)readPid:(int) pid len:(int)len;
 
