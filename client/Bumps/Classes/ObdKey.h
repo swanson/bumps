@@ -21,15 +21,28 @@
 
 #import "config.h"
 
+
+
 @interface ObdKey : NSObject {
 	int keySock;
-	int	serverSock;
+	int serverSock;
+   UITextView *text;
+   NSString *logId;
+   NSTimer *timer;
 }
 
 @property (nonatomic) int keySock;
 @property (nonatomic) int serverSock;
+@property (nonatomic, retain) NSString *logId;
+@property (nonatomic, retain) UITextView *text;
+@property (nonatomic, retain) NSTimer *timer;
 
-- (uint32_t)readPid:(int) pid;
+- (NSString *)readPid:(int) pid len:(int)len;
+
+- (BOOL)connectServer;
+- (BOOL)connectObdKey;
+
+- (void)initWithText:(UITextView *)text logId:(NSString *)logId;
 
 - (BOOL)connectSocket:(int *) sock host:(NSString *)host port:(NSString *)port;
 

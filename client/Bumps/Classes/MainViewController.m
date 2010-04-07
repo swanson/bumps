@@ -10,7 +10,7 @@
 
 
 @implementation MainViewController
-@synthesize textView, logButton, logIDField, label, ldp;
+@synthesize textView, logButton, logIDField, label, ldp, key;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -59,6 +59,8 @@
 	[self.view addSubview:label];
 	[label release];
 	
+   key = [ObdKey alloc];
+   
 	UISwitch *logSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(80, 50, 500, 100)];
 	[logSwitch setAlternateColors:YES];
 	[logSwitch addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventValueChanged];
@@ -70,6 +72,7 @@
 	logIDField.backgroundColor = [UIColor blackColor];
 	logIDField.borderStyle = UITextBorderStyleRoundedRect;
 	logIDField.delegate = self;
+   logIDField.text = @"ChangeMe!";
 	[self.view addSubview:logIDField];
 	[logIDField release];
 	//logButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] initWithFrame:CGRectMake(50, 300, 200, 100)];
@@ -81,17 +84,49 @@
     UISwitch *onoff = (UISwitch *) sender;
     if (onoff.on) {
 		ldp.logid = logIDField.text;
-		[ldp startLogging];
-	}
+       [ldp startLogging];
+       
+       if ([logIDField.text length] == 0)
+       {
+          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Must enter Log ID!"
+                                      delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil]
+            autorelease] show];
+          [onoff setOn:FALSE animated:TRUE];
+          return;
+       }
+       
+      [key initWithText:textView logId:logIDField.text];
+
+       if (![key connectObdKey])
+       {
+          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the OBD key! =["
+                                     delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil]
+            autorelease] show];
+          [onoff setOn:FALSE animated:TRUE];
+          return;
+       }
+       
+       if (![key connectServer])
+       {
+          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the central server! =["
+                                      delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil]
+            autorelease] show];
+          [onoff setOn:FALSE animated:TRUE];
+          return;
+       }
+       
+       [key startLogging];
+   }
 	else {
 		ldp.logid = nil;
 		[ldp stopLogging];
+      [key stopLogging];
 	}
 
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)logIDField {
-	[logIDField resignFirstResponder];
+- (BOOL)textFieldShouldReturn:(UITextField *)logIDField_foo {
+	[logIDField_foo resignFirstResponder];
 	return YES;
 }
 /*

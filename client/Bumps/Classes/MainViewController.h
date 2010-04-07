@@ -18,6 +18,7 @@
 #include <netdb.h>
 #include <fcntl.h>
 #include "LocationDataProvider.h"
+#include "ObdKey.h"
 
 
 @interface MainViewController : UIViewController <UITextViewDelegate, UITextFieldDelegate> {
@@ -26,6 +27,7 @@
 	UILabel *label;
 	UITextField *logIDField;
 	LocationDataProvider *ldp;
+   ObdKey *key;
 	
 }
 
@@ -34,5 +36,6 @@
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UITextField *logIDField;
 @property (nonatomic, retain) LocationDataProvider *ldp;
+@property (nonatomic, retain) ObdKey *key;
 
 @end
