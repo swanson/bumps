@@ -95,7 +95,7 @@ class DatabaseServiceProvider():
         except ValueError:
             isFloat = False
         try:
-            int(data[2])
+            int(data[2], 16)
         except:
             isInt = False
         if not isInt and not isFloat:
