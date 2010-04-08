@@ -89,7 +89,7 @@
 
        if (![car connectObdKey])
        {
-          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the OBD car! =["
+          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the OBD key! =["
                                      delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil]
             autorelease] show];
           [onoff setOn:FALSE animated:TRUE];
