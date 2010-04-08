@@ -85,6 +85,7 @@ class DatabaseServiceProvider():
         return value
 
     def logToDatabase(self, data):
+        isInt, isFloat = True, True
         data = data.split(':')
         if len(data) is not 3:
             print "Bad data: %s" % data
@@ -92,6 +93,12 @@ class DatabaseServiceProvider():
         try:
             float(data[2])
         except ValueError:
+            isFloat = False
+        try:
+            int(data[2])
+        except:
+            isInt = False
+        if not isInt and not isFloat:
             print "Bad data: %s" % data
             return
         value = self.decodePIDValue(data[1], data[2])
