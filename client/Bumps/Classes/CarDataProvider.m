@@ -272,7 +272,7 @@
    // change pointer to point to begining of data
    p -= 2;
    
-   s = [[NSString stringWithFormat:@"243:11:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"%@:11:%s\r\n", logId, p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
    if (s != nil)
    {
@@ -305,7 +305,7 @@
    // change pointer to point to begining of data
    p -= 2;
    
-   s = [[NSString stringWithFormat:@"243:0D:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"%@:0D:%s\r\n", logId, p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
    if (s != nil)
    {
@@ -342,7 +342,7 @@
    p[3] = p[4];
    p[5] = '\0';
    
-   s = [[NSString stringWithFormat:@"243:0C:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"%@:0C:%s\r\n", logId, p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
    if (s != nil)
    {
@@ -376,7 +376,7 @@
    // change pointer to point to begining of data
    p -= 2;
    
-   s = [[NSString stringWithFormat:@"243:04:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"%@:04:%s\r\n", logId, p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
    if (s != nil)
    {
@@ -410,7 +410,7 @@
    // change pointer to point to begining of data
    p -= 2;
    
-   s = [[NSString stringWithFormat:@"243:05:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"%@:05:%s\r\n", logId, p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
    if (s != nil)
    {
@@ -444,7 +444,7 @@
    // change pointer to point to begining of data
    p -= 2;
    
-   s = [[NSString stringWithFormat:@"243:0A:%s\r\n", p]
+   s = [[NSString stringWithFormat:@"%@:0A:%s\r\n", logId, p]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
    if (s != nil)
    {
