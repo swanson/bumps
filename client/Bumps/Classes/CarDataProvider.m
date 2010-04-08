@@ -225,6 +225,8 @@
 
 - (void)stopLogging
 {
+   close(keySock);
+   close(serverSock);
    [timer invalidate];
    [lm stopUpdatingLocation];
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:0];
@@ -234,9 +236,12 @@
 
 - (void)test_log
 {
-   obdDisplayStr = @"this is a loop";
+   NSString *dispStr = @"";
+   char p[25] = "Hello, world!";
+   dispStr = [dispStr stringByAppendingFormat:@"Throttle position: %s\n", p];
+   obdDisplayStr = dispStr;
    [self updateDisplay];
-   send(serverSock, "test:test:test\r\n", strlen("test:test:test\r\n"), 0);
+   //send(serverSock, "test:test:test\r\n", strlen("test:test:test\r\n"), 0);
 }
 
 - (void)read_obd {
@@ -278,7 +283,7 @@
       NSLog(@"s is nil, %s", buf);
    }
    
-   [dispStr stringByAppendingFormat:@"Throttle position: %s\n", p];
+   dispStr = [dispStr stringByAppendingFormat:@"Throttle position: %s\n", p];
    
    // request the speed
    send(keySock, "010D\r", 5, 0);
@@ -311,7 +316,7 @@
       NSLog(@"s is nil, %s", buf);
    }
    
-   [dispStr stringByAppendingFormat:@"Speed: %s\n", p];
+   dispStr = [dispStr stringByAppendingFormat:@"Speed: %s\n", p];
    
    
    // request the rpm
@@ -348,7 +353,7 @@
       NSLog(@"s is nil, %s", buf);
    }
    
-   [dispStr stringByAppendingFormat:@"RPM: %s\n", p];
+   dispStr = [dispStr stringByAppendingFormat:@"RPM: %s\n", p];
    
    
    // request the engine load
@@ -382,7 +387,7 @@
       NSLog(@"s is nil, %s", buf);
    }
    
-   [dispStr stringByAppendingFormat:@"Engine Load: %s\n", p];
+   dispStr = [dispStr stringByAppendingFormat:@"Engine Load: %s\n", p];
    
    
    // request the coolant temp
@@ -416,7 +421,7 @@
       NSLog(@"s is nil, %s", buf);
    }
    
-   [dispStr stringByAppendingFormat:@"Coolant temp: %s\n", p];
+   dispStr = [dispStr stringByAppendingFormat:@"Coolant temp: %s\n", p];
    
    
    // request the fuel pressure
@@ -450,10 +455,12 @@
       NSLog(@"s is nil, %s", buf);
    }
    
-   [dispStr stringByAppendingFormat:@"Fuel Pressure: %s\n", p];
+   dispStr = [dispStr stringByAppendingFormat:@"Fuel Pressure: %s\n", p];
    
-   [obdDisplayStr dealloc];
-   obdDisplayStr = dispStr;
+   obdDisplayStr = [[NSString alloc] initWithFormat
+                    :@"%@", dispStr];
+   
+   NSLog(@"the str: %s", obdDisplayStr);
    
    [self updateDisplay];
    
@@ -470,7 +477,6 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-	[gpsDisplayStr release];
 	gpsDisplayStr = [[NSString alloc] initWithFormat:@"Location: %@", [newLocation description]];
    
    [self updateDisplay];
@@ -500,16 +506,16 @@
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
-	[gpsDisplayStr release];
 	gpsDisplayStr = [[NSString alloc] initWithFormat:@"Error: %@", [error description]];
+   [self updateDisplay];
 }
 
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	[accelDisplayStr release];
 	accelDisplayStr = [[NSString alloc] initWithFormat:@"Acceleration: x: %.2f y: %.2f z: %.2f ",
                       acceleration.x, acceleration.y, acceleration.z];
+   [self updateDisplay];
 	
 	const char *p;
 	p = [[NSString stringWithFormat:@"%@:AX:%.2f\r\n", logId, acceleration.x]
