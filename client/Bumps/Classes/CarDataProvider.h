@@ -1,5 +1,5 @@
 //
-//  obdKey.h
+//  CarDataProvider.h
 //  Bumps
 //
 //  Created by Jevin Sweval on 4/1/10.
@@ -25,15 +25,16 @@
 
 
 
-@interface ObdKey : UIViewController <UIAccelerometerDelegate,CLLocationManagerDelegate> {
+@interface CarDataProvider : UIViewController <UIAccelerometerDelegate,CLLocationManagerDelegate> {
 	int keySock;
 	int serverSock;
    UITextView *text;
    NSString *logId;
    NSTimer *timer;
 	CLLocationManager *lm;
-	NSString *gpsstr;
-	NSString *accelstr;
+	NSString *obdDisplayStr;
+	NSString *gpsDisplayStr;
+	NSString *accelDisplayStr;
 }
 
 @property (nonatomic) int keySock;
@@ -42,13 +43,19 @@
 @property (nonatomic, retain) UITextView *text;
 @property (nonatomic, retain) NSTimer *timer;
 @property (nonatomic, retain) CLLocationManager *lm;
-@property (nonatomic, retain) NSString *gpsstr;
-@property (nonatomic, retain) NSString *accelstr;
+@property (nonatomic, retain) NSString *obdDisplayStr;
+@property (nonatomic, retain) NSString *gpsDisplayStr;
+@property (nonatomic, retain) NSString *accelDisplayStr;
 
 - (NSString *)readPid:(int) pid len:(int)len;
 
 - (BOOL)connectServer;
 - (BOOL)connectObdKey;
+
+- (void)startLogging;
+- (void)stopLogging;
+
+- (void)updateDisplay;
 
 - (void)initWithText:(UITextView *)text logId:(NSString *)logId;
 

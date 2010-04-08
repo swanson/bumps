@@ -17,8 +17,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <fcntl.h>
-#include "LocationDataProvider.h"
-#include "ObdKey.h"
+#include "CarDataProvider.h"
 
 
 @interface MainViewController : UIViewController <UITextViewDelegate, UITextFieldDelegate> {
@@ -26,8 +25,7 @@
 	UIButton *logButton;
 	UILabel *label;
 	UITextField *logIDField;
-	LocationDataProvider *ldp;
-   ObdKey *key;
+   CarDataProvider *car;
 	
 }
 
@@ -35,7 +33,6 @@
 @property (nonatomic, retain) UIButton *logButton;
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UITextField *logIDField;
-@property (nonatomic, retain) LocationDataProvider *ldp;
-@property (nonatomic, retain) ObdKey *key;
+@property (nonatomic, retain) CarDataProvider *car;
 
 @end

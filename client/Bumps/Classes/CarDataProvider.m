@@ -1,23 +1,22 @@
 //
-//  obdKey.m
+//  CarDataProvider.m
 //  Bumps
 //
 //  Created by Jevin Sweval on 4/1/10.
 //  Copyright 2010 Apple Inc. All rights reserved.
 //
 
-#import "obdKey.h"
+#import "CarDataProvider.h"
 
 
-@implementation ObdKey
+@implementation CarDataProvider
 
 @synthesize keySock;
 @synthesize serverSock;
 @synthesize text;
 @synthesize logId;
 @synthesize lm;
-@synthesize gpsstr;
-@synthesize accelstr;
+@synthesize obdDisplayStr, gpsDisplayStr, accelDisplayStr;
 @synthesize timer;
 
 - (NSString *)readPid:(int)pid len:(int)len
@@ -63,13 +62,16 @@
       p[5] = '\0';
    }
 	
-	return [NSString stringWithCString:p];
+	return [NSString stringWithFormat:@"%s", p];
 }
 
 - (void)initWithText:(UITextView *)textView logId:(NSString *)logIdentifier
 {
    text = textView;
-   logId = logIdentifier;   
+   logId = logIdentifier;
+	obdDisplayStr = @"";
+   gpsDisplayStr = @"";
+   accelDisplayStr = @"";
    return;
 }
 
@@ -215,7 +217,7 @@
    
    timer = [NSTimer timerWithTimeInterval:1.5
                                    target:self
-                                 selector:@selector(read_obd)
+                                 selector:@selector(test_log)
                                  userInfo:nil
                                   repeats:YES];
    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
@@ -232,8 +234,8 @@
 
 - (void)test_log
 {
-   NSLog(@"this is a loop");
-   text.text = @"this is a loop";
+   obdDisplayStr = @"this is a loop";
+   [self updateDisplay];
    send(serverSock, "test:test:test\r\n", strlen("test:test:test\r\n"), 0);
 }
 
@@ -242,6 +244,7 @@
    char buf[512] = {0};
    char *p;
    const char *s;
+   NSString *dispStr = @"";
    int ret;
    
    // request the throttle position
@@ -275,6 +278,8 @@
       NSLog(@"s is nil, %s", buf);
    }
    
+   [dispStr stringByAppendingFormat:@"Throttle position: %s\n", p];
+   
    // request the speed
    send(keySock, "010D\r", 5, 0);
    
@@ -305,6 +310,8 @@
       buf[10] = '\0';
       NSLog(@"s is nil, %s", buf);
    }
+   
+   [dispStr stringByAppendingFormat:@"Speed: %s\n", p];
    
    
    // request the rpm
@@ -341,6 +348,8 @@
       NSLog(@"s is nil, %s", buf);
    }
    
+   [dispStr stringByAppendingFormat:@"RPM: %s\n", p];
+   
    
    // request the engine load
    send(keySock, "0104\r", 5, 0);
@@ -373,6 +382,9 @@
       NSLog(@"s is nil, %s", buf);
    }
    
+   [dispStr stringByAppendingFormat:@"Engine Load: %s\n", p];
+   
+   
    // request the coolant temp
    send(keySock, "0105\r", 5, 0);
    
@@ -404,6 +416,7 @@
       NSLog(@"s is nil, %s", buf);
    }
    
+   [dispStr stringByAppendingFormat:@"Coolant temp: %s\n", p];
    
    
    // request the fuel pressure
@@ -437,67 +450,77 @@
       NSLog(@"s is nil, %s", buf);
    }
    
+   [dispStr stringByAppendingFormat:@"Fuel Pressure: %s\n", p];
    
+   [obdDisplayStr dealloc];
+   obdDisplayStr = dispStr;
+   
+   [self updateDisplay];
+   
+}
+
+- (void)updateDisplay
+{
+   text.text = [[NSString alloc] initWithFormat:@"%@\n%@\n%@",
+                gpsDisplayStr, accelDisplayStr, obdDisplayStr];
+   return;
 }
 
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-	[gpsstr release];
-	gpsstr = [[NSString alloc] initWithFormat:@"Location: %@", [newLocation description]];
-	NSLog(@"%@", gpsstr);
-	//results.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
+	[gpsDisplayStr release];
+	gpsDisplayStr = [[NSString alloc] initWithFormat:@"Location: %@", [newLocation description]];
+   
+   [self updateDisplay];
 	
 	const char *p;
 	p = [[NSString stringWithFormat:@"%@:LA:%.10f\r\n", logId, [newLocation coordinate].latitude]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:LO:%0.10f\r\n", logId, [newLocation coordinate].longitude]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:CO:%.2f\r\n", logId, [newLocation course]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:HA:%.2f\r\n", logId, [newLocation horizontalAccuracy]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:VA:%.2f\r\n", logId, [newLocation verticalAccuracy]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:SP:%.2f\r\n", logId, [newLocation speed]]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	
 }
 
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
-	[gpsstr release];
-	gpsstr = [[NSString alloc] initWithFormat:@"Error: %@", [error description]];
-	NSLog(@"%@", gpsstr);
-	//results.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
+	[gpsDisplayStr release];
+	gpsDisplayStr = [[NSString alloc] initWithFormat:@"Error: %@", [error description]];
 }
 
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	[accelstr release];
-	accelstr = [[NSString alloc] initWithFormat:@"Acceleration: x: %.2f y: %.2f z: %.2f ", acceleration.x, acceleration.y, acceleration.z];
-	NSLog(@"%@", accelstr);
-	//results.text = [NSString stringWithFormat:@"%@\n\n\n%@", gpsstr, accelstr];
+	[accelDisplayStr release];
+	accelDisplayStr = [[NSString alloc] initWithFormat:@"Acceleration: x: %.2f y: %.2f z: %.2f ",
+                      acceleration.x, acceleration.y, acceleration.z];
 	
 	const char *p;
 	p = [[NSString stringWithFormat:@"%@:AX:%.2f\r\n", logId, acceleration.x]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:AY:%.2f\r\n", logId, acceleration.y]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+	send(serverSock, p, strlen(p), 0);
 	p = [[NSString stringWithFormat:@"%@:AZ:%.2f\r\n", logId, acceleration.z]
         cStringUsingEncoding:(NSStringEncoding)NSASCIIStringEncoding];
-	//send(sockfd, p, strlen(p), 0);
+   send(serverSock, p, strlen(p), 0);
 }
 
 

@@ -10,7 +10,7 @@
 
 
 @implementation MainViewController
-@synthesize textView, logButton, logIDField, label, ldp, key;
+@synthesize textView, logButton, logIDField, label, car;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -23,8 +23,6 @@
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
-	ldp = [LocationDataProvider alloc];
-	
 	UITextView * theview = [[UITextView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	theview.backgroundColor = [UIColor blackColor];
 	theview.editable = FALSE;
@@ -39,9 +37,7 @@
 	textView.text = @"Now is the time for all good developers to come to serve their country.\n\nNow is the time for all good developers to come to serve their country.";
 	[self.view addSubview:textView];
 	
-	ldp.results = textView;
-	
-	label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,50)];
+   label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,50)];
 	label.text = @"Log ID";
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
@@ -59,7 +55,7 @@
 	[self.view addSubview:label];
 	[label release];
 	
-   key = [ObdKey alloc];
+   car = [CarDataProvider alloc];
    
 	UISwitch *logSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(80, 50, 500, 100)];
 	[logSwitch setAlternateColors:YES];
@@ -75,17 +71,11 @@
    logIDField.text = @"ChangeMe!";
 	[self.view addSubview:logIDField];
 	[logIDField release];
-	//logButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] initWithFrame:CGRectMake(50, 300, 200, 100)];
-	//[logButton setTitle:@"start" forState:UIControlStateNormal];
-	//[self.view addSubview:logButton];
 }
 
 - (IBAction) switchToggled: (id) sender {
     UISwitch *onoff = (UISwitch *) sender;
     if (onoff.on) {
-		ldp.logid = logIDField.text;
-       [ldp startLogging];
-       
        if ([logIDField.text length] == 0)
        {
           [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Must enter Log ID!"
@@ -95,18 +85,18 @@
           return;
        }
        
-      [key initWithText:textView logId:logIDField.text];
+      [car initWithText:textView logId:logIDField.text];
 
-       if (![key connectObdKey])
+       if (![car connectObdKey])
        {
-          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the OBD key! =["
+          [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the OBD car! =["
                                      delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil]
             autorelease] show];
           [onoff setOn:FALSE animated:TRUE];
           return;
        }
        
-       if (![key connectServer])
+       if (![car connectServer])
        {
           [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Couldn't connect to the central server! =["
                                       delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil]
@@ -115,12 +105,10 @@
           return;
        }
        
-       [key startLogging];
+       [car startLogging];
    }
 	else {
-		ldp.logid = nil;
-		[ldp stopLogging];
-      [key stopLogging];
+      [car stopLogging];
 	}
 
 }
