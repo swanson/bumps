@@ -217,7 +217,7 @@
    
    timer = [NSTimer timerWithTimeInterval:1.5
                                    target:self
-                                 selector:@selector(test_log)
+                                 selector:@selector(read_obd)
                                  userInfo:nil
                                   repeats:YES];
    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
