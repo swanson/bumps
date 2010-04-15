@@ -10,7 +10,7 @@
 
 
 @implementation MainViewController
-@synthesize textView, logButton, logIDField, label, car;
+@synthesize textView, logButton, logIDField, label, car, switch1, switch2;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -29,7 +29,7 @@
 	self.view = theview;
 	[theview release];
 	
-	textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 100, 320, 480)];
+	textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 120, 320, 480)];
 	textView.textColor = [UIColor whiteColor];
 	textView.backgroundColor = [UIColor blackColor];
 	textView.font = [UIFont fontWithName:@"Courier" size:14];
@@ -37,32 +37,47 @@
 	textView.text = @"Now is the time for all good developers to come to serve their country.\n\nNow is the time for all good developers to come to serve their country.";
 	[self.view addSubview:textView];
 	
+   label = [[UILabel alloc] initWithFrame:CGRectMake(0,40,150,50)];
+	label.text = @"OBD Enabled?";
+	label.textAlignment = UITextAlignmentLeft;
+	label.textColor = [UIColor whiteColor];
+	label.backgroundColor = [UIColor clearColor];
+	label.font = [UIFont fontWithName:@"Courier" size:16];
+	[self.view addSubview:label];
+	[label release];
+   
    label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,70,50)];
 	label.text = @"Log ID";
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = UITextAlignmentLeft;
 	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor blackColor];
+	label.backgroundColor = [UIColor clearColor];
 	label.font = [UIFont fontWithName:@"Courier" size:16];
 	[self.view addSubview:label];
 	[label release];
 	
-	label = [[UILabel alloc] initWithFrame:CGRectMake(0,40,70,50)];
-	label.text = @"Status";
-	label.textAlignment = UITextAlignmentCenter;
+	label = [[UILabel alloc] initWithFrame:CGRectMake(0,80,150,50)];
+	label.text = @"Logging Status";
+	label.textAlignment = UITextAlignmentLeft;
 	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor blackColor];
+	label.backgroundColor = [UIColor clearColor];
 	label.font = [UIFont fontWithName:@"Courier" size:16];
 	[self.view addSubview:label];
 	[label release];
 	
    car = [CarDataProvider alloc];
+   car.shouldLogOBD = FALSE;
    
-	UISwitch *logSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(80, 50, 500, 100)];
-	[logSwitch setAlternateColors:YES];
-	[logSwitch addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:logSwitch];
-	[logSwitch release];
+	switch1 = [[UISwitch alloc] initWithFrame:CGRectMake(185, 50, 500, 100)];
+	[switch1 setAlternateColors:YES];
+	[switch1 addTarget:self action:@selector(shouldLogOBDToggled:) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:switch1];
+	[switch1 release];
 	
+   switch2 = [[UISwitch alloc] initWithFrame:CGRectMake(185, 90, 500, 100)];
+	[switch2 setAlternateColors:YES];
+	[switch2 addTarget:self action:@selector(startLogToggled:) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:switch2];
+	[switch2 release];
 	
 	logIDField = [[UITextField alloc] initWithFrame:CGRectMake(80, 13, 200, 25)];
 	logIDField.backgroundColor = [UIColor blackColor];
@@ -73,9 +88,23 @@
 	[logIDField release];
 }
 
-- (IBAction) switchToggled: (id) sender {
+- (IBAction) shouldLogOBDToggled: (id) sender {
+   UISwitch *onoff = (UISwitch *) sender;
+   if (onoff.on) {
+      car.shouldLogOBD = TRUE;
+   }
+	else {
+      car.shouldLogOBD = FALSE;
+	}
+   
+}
+
+- (IBAction) startLogToggled: (id) sender {
     UISwitch *onoff = (UISwitch *) sender;
     if (onoff.on) {
+       switch1.enabled = FALSE;
+       logIDField.userInteractionEnabled = FALSE;
+       logIDField.textColor = [UIColor grayColor];
        if ([logIDField.text length] == 0)
        {
           [[[[UIAlertView alloc] initWithTitle:@"ERROR!" message:@"Must enter Log ID!"
@@ -104,10 +133,13 @@
           [onoff setOn:FALSE animated:TRUE];
           return;
        }
-       
+
        [car startLogging];
    }
 	else {
+      switch1.enabled = TRUE;
+      logIDField.userInteractionEnabled = TRUE;
+      logIDField.textColor = [UIColor blackColor];
       [car stopLogging];
 	}
 

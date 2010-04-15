@@ -26,6 +26,7 @@
 	UILabel *label;
 	UITextField *logIDField;
    CarDataProvider *car;
+   UISwitch *switch1, *switch2;
 	
 }
 
@@ -34,5 +35,6 @@
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UITextField *logIDField;
 @property (nonatomic, retain) CarDataProvider *car;
-
+@property (nonatomic, retain) UISwitch *switch1;
+@property (nonatomic, retain) UISwitch *switch2;
 @end

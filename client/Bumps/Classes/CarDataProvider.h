@@ -35,6 +35,7 @@
 	NSString *obdDisplayStr;
 	NSString *gpsDisplayStr;
 	NSString *accelDisplayStr;
+   BOOL  *shouldLogOBD;
 }
 
 @property (nonatomic) int keySock;
@@ -46,6 +47,7 @@
 @property (nonatomic, retain) NSString *obdDisplayStr;
 @property (nonatomic, retain) NSString *gpsDisplayStr;
 @property (nonatomic, retain) NSString *accelDisplayStr;
+@property (nonatomic) BOOL *shouldLogOBD;
 
 - (NSString *)readPid:(int) pid len:(int)len;
 

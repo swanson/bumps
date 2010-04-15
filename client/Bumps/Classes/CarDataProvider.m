@@ -17,7 +17,7 @@
 @synthesize logId;
 @synthesize lm;
 @synthesize obdDisplayStr, gpsDisplayStr, accelDisplayStr;
-@synthesize timer;
+@synthesize timer, shouldLogOBD;
 
 - (NSString *)readPid:(int)pid len:(int)len
 {
@@ -77,6 +77,9 @@
 
 - (BOOL)connectObdKey
 {
+   if (!shouldLogOBD) {
+      return TRUE;
+   }
    char *p, c;
    char buf[512] = {0};
    int ret;
@@ -245,6 +248,9 @@
 }
 
 - (void)read_obd {
+   if (!shouldLogOBD) {
+      return;
+   }
    char c;
    char buf[512] = {0};
    char *p;
