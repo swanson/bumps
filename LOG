@@ -194,10 +194,32 @@
             -Successful live demo with Joey
             -Logged several passes over 'Celery Bog' using two different phones: Jevins
                 and the VIP team phone
-            -Maybe Joey plotted some stuff
+            -Maybe Joey plotted some stuff?
+
+        Meeting Summary:
+            -Reported results from demo to Aaron and Prof. Krogmeier
+            -Discussed minor improvements to allow for OBD-free logging
+            -Patted ourselves on the back for the remainder of the meeting
+
+        Assigned Tasks:
+            -Allow app to log only GPS/Accelerometer if the user choices so
+            -Comment the code since apparently Joey might want to use it
+                at some point; Matt and Jevin are skeptical :-)
+            -Add additional documentation describing how to build the app in
+                XCode
+            -Look into visualization approaches for the data
+
+    April 16, 2010:
+        Deliverables:
+            -Added another toggle switch to allow you to log just GPS/Accelerometer
+                data
+            -Commented the code, cried at how ugly some of it is
+            -Took some screenshots of how to build the project in XCode
+            -Look at some heatmap-style libraries for displaying information
+            -Jevin logged like 1.5 hours of data from Chicago to West Lafayette because
+                he is a glutton for punishment
+            -Made a logo for the app
 
         Meeting Summary:
         Assigned Tasks:
-
-    April 16, 2010:
 

@@ -67,9 +67,11 @@
 
 - (void)initWithText:(UITextView *)textView logId:(NSString *)logIdentifier
 {
+   //initialization method called after the GUI has been created
    text = textView;
    logId = logIdentifier;
-	obdDisplayStr = @"";
+   //set initial value for all strings to be empty
+   obdDisplayStr = @"";
    gpsDisplayStr = @"";
    accelDisplayStr = @"";
    return;
@@ -77,14 +79,16 @@
 
 - (BOOL)connectObdKey
 {
+   //return if user picked to not log OBD data
    if (!shouldLogOBD) {
       return TRUE;
    }
+
    char *p, c;
    char buf[512] = {0};
    int ret;
    
-   // try to connect to the key
+   // try to connect to the key, return False on failure
    if (![self connectSocket:&keySock host:OBDKEY_HOST port:OBDKEY_PORT]) {
       return FALSE;
    }
@@ -212,12 +216,17 @@
 
 - (void)startLogging
 {
+    //instantiate location manager and start it
    lm = [[CLLocationManager alloc] init];
 	lm.delegate = self; // send loc updates to myself
 	[lm startUpdatingLocation];
+
+    //start up accelerometer
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:0.5];
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
    
+    //start up timer that polls OBDKey for values
+    //timer will call read_obd() method every 1.5 seconds
    timer = [NSTimer timerWithTimeInterval:1.5
                                    target:self
                                  selector:@selector(read_obd)
@@ -228,9 +237,14 @@
 
 - (void)stopLogging
 {
+    //clean up sockets
    close(keySock);
    close(serverSock);
+
+   //stop periodic read_obd() calls
    [timer invalidate];
+
+   //stop GPS and accelerometer
    [lm stopUpdatingLocation];
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:0];
 	[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
@@ -239,6 +253,7 @@
 
 - (void)test_log
 {
+    //FOR DEBUG PURPOSES
    NSString *dispStr = @"";
    char p[25] = "Hello, world!";
    dispStr = [dispStr stringByAppendingFormat:@"Throttle position: %s\n", p];
@@ -248,6 +263,8 @@
 }
 
 - (void)read_obd {
+
+    //return if we arent reading odb data
    if (!shouldLogOBD) {
       return;
    }
@@ -328,7 +345,8 @@
    // request the rpm
    send(keySock, "010C\r", 5, 0);
    
-   // get the response
+   // get the response, note this PID returns 2 bytes so pointer
+   // has to be adjusted accordingly
    p = buf;
    do {
       ret = recv(keySock, &c, 1, 0);
@@ -474,11 +492,13 @@
 
 - (void)updateDisplay
 {
+    //refresh display on the phone with current values
    text.text = [[NSString alloc] initWithFormat:@"%@\n%@\n%@",
                 gpsDisplayStr, accelDisplayStr, obdDisplayStr];
    return;
 }
 
+//standard boilerplate methods for GPS
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
@@ -516,7 +536,7 @@
    [self updateDisplay];
 }
 
-
+//standard boilerplate methods for accelerometer
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
 	accelDisplayStr = [[NSString alloc] initWithFormat:@"Acceleration: x: %.2f y: %.2f z: %.2f ",
