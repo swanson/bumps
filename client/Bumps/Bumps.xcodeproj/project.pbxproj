@@ -13,6 +13,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		C14EDF601178D62000261329 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C14EDF5F1178D62000261329 /* Icon.png */; };
 		C1CD559C116568970046C71D /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1CD559B116568970046C71D /* MainViewController.m */; };
 		C1CD56CE11657D4F0046C71D /* LocationDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C1CD56CD11657D4F0046C71D /* LocationDataProvider.m */; };
 		C1CD5727116581180046C71D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1CD5726116581180046C71D /* CoreLocation.framework */; };
@@ -31,6 +32,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Bumps_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bumps_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Bumps-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Bumps-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		C14EDF5F1178D62000261329 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		C1CD559A116568970046C71D /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C1CD559B116568970046C71D /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		C1CD56CC11657D4F0046C71D /* LocationDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDataProvider.h; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C14EDF5F1178D62000261329 /* Icon.png */,
 				8D1107310486CEB800E47090 /* Bumps-Info.plist */,
 			);
 			name = Resources;
@@ -159,6 +162,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C14EDF601178D62000261329 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
